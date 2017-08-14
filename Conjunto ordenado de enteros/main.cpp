@@ -18,23 +18,34 @@
 
 int main(int argc, char** argv)
 {
-    IntegerSortedSet a, b; // a = {1, 2, 3} y b = {10, 11, 13}
+    IntegerSortedSet setA, setB; // a = {1, 2, 3} y b = {10, 11, 13}
 
-    a.insertSorted( 1 );
-    a.insertSorted( 2 );
-    a.insertSorted( 3 );
+    setA.insertSorted( 1 );
+    setA.insertSorted( 2 );
+    setA.insertSorted( 3 );
 
-    std::cout << a.toStr( ) << std::endl;
+    std::cout << setA.toStr( ) << std::endl;
 
-    b.insertSorted( 10 );
-    b.insertSorted( 11 );
-    b.insertSorted( 13 );
+    setB.insertSorted( 10 );
+    setB.insertSorted( 11 );
+    setB.insertSorted( 13 );
 
-    std::cout << b.toStr( ) << std::endl;
+    std::cout << setB.toStr( ) << std::endl;
 
-    IntegerSortedSet c = a + b; // Unión del conjunto A con el conjunto B.
+    // Inicialización de apuntador inteligente.
+    std::shared_ptr<IntegerSortedSet> setE( new IntegerSortedSet( ) );
 
-    IntegerSortedSet d = a / b; // diferencia simétrica de los conjuntos A y B.
+    setE->insertSorted( 12 );
+    setE->insertSorted( 9 );
+    setE->insertSorted( 6 );
+
+    std::cout << setE->toStr( ) << std::endl;
+
+    // delete setE;
+
+    //IntegerSortedSet setC = setA + setB; // Unión del conjunto A con el conjunto B.
+
+    //IntegerSortedSet setD = setA / setB; // diferencia simétrica de los conjuntos A y B.
 
     return 0;
 }

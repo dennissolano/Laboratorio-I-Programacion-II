@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <memory>
 
 //  Representa un conjunto ordenado de enteros.
 
@@ -26,16 +27,21 @@ private:
     struct Node
     {
         int data;
-        Node* next;
+        std::shared_ptr<Node> next;
 
         Node(int number)
         : data{ number }
         , next{ nullptr }
         {
         }
+
+        ~Node()
+        {
+            std::cout << "Borrando: " << data << std::endl;
+        }
     };
 
-    Node* head;
+    std::shared_ptr<Node> head;
 
 public:
     // EFE: Construye un nuevo conjunto de enteros vacío.

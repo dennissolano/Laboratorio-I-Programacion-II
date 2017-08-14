@@ -20,8 +20,8 @@ IntegerSortedSet::IntegerSortedSet()
 
 IntegerSortedSet::IntegerSortedSet(const IntegerSortedSet& other)
 {
-    Node* current = other.head;
-    Node* last = nullptr;
+    std::shared_ptr<Node> current = other.head;
+    std::shared_ptr<Node> last = nullptr;
 
     if( !current ) // Conjunto vacío.
     {
@@ -29,26 +29,28 @@ IntegerSortedSet::IntegerSortedSet(const IntegerSortedSet& other)
     }
     else
     {
-        head = new Node( current->data );
+        head = std::shared_ptr<Node>( new Node( current->data ) );
         last = this->head;
 
         while( ( current = current->next ) )
         {
-            last->next = new Node( current->data );
+            last->next = std::shared_ptr<Node>( new Node( current->data ) );
             last = last->next;
         }
     }
 }
 
+// Apuntadores inteligentes, no se necesita más el destructor.
+
 IntegerSortedSet::~IntegerSortedSet()
 {
-    Node* current = head;
-    Node* next = nullptr;
+    std::shared_ptr<Node> current = head;
+    std::shared_ptr<Node> next = nullptr;
 
     while( current )
     {
         next = current->next;
-        delete current;
+        // delete current;
         current = next;
     }
 }
@@ -56,19 +58,19 @@ IntegerSortedSet::~IntegerSortedSet()
 bool IntegerSortedSet::insertSorted(int number)
 {
     bool result = false;
-    Node* current = head;
-    Node* previous = nullptr;
+    std::shared_ptr<Node> current = head;
+    std::shared_ptr<Node> previous = nullptr;
 
     if( !head ) // Conjunto vació. Agrega elemento a *this.
     {
-        head = new Node( number );
+        head = std::shared_ptr<Node>( new Node( number ) );
         result = true;
     }
     else
     {
         if( head->data > number ) // Insertar antes del inicio de la lista.
         {
-            current = new Node( number );
+            current = std::shared_ptr<Node>( new Node( number ) );
             current->next = head;
             head = current;
             result = true;
@@ -104,7 +106,7 @@ bool IntegerSortedSet::insertSorted(int number)
             if( result ) // Agregar elemento en medio y al final.
             {
                 current = previous->next;
-                previous->next = new Node( number );
+                previous->next = std::shared_ptr<Node>( new Node( number ) );
                 previous->next->next = current;
             }
         }
@@ -116,8 +118,8 @@ bool IntegerSortedSet::insertSorted(int number)
 
 bool IntegerSortedSet::deleteNumber(int number)
 {
-    Node* current = head;
-    Node* previous = nullptr;
+    std::shared_ptr<Node> current = head;
+    std::shared_ptr<Node> previous = nullptr;
     bool result = false;
 
     // Lista tiene al menos un elemento y el elemento al inicio es menor que el que se busca elminar. 
@@ -129,7 +131,7 @@ bool IntegerSortedSet::deleteNumber(int number)
         if( current->data == number ) // Eliminar al inicio.
         {
             current = head->next;
-            delete head;
+            // delete head;
             head = current;
             result = true;
         }
@@ -159,7 +161,7 @@ bool IntegerSortedSet::deleteNumber(int number)
             if( result ) // Eliminar al medio o al final.
             {
                 current = previous->next->next; // Guardar el nodo siguiente al que se va a eliminar.
-                delete previous->next; // Elimina el nodo objetivo.
+                // delete previous->next; // Elimina el nodo objetivo.
                 previous->next = current;
 
             }
@@ -171,7 +173,7 @@ bool IntegerSortedSet::deleteNumber(int number)
 
 bool IntegerSortedSet::search(int number) const
 {
-    Node* current = head;
+    std::shared_ptr<Node> current = head;
     bool resutl = false;
 
     while( current )
@@ -219,7 +221,7 @@ IntegerSortedSet& IntegerSortedSet::operator/(const IntegerSortedSet& other ) co
 std::string IntegerSortedSet::toStr() const
 {
     std::stringstream buffer; // Instancia de flujo de salida.
-    Node* current = head;
+    std::shared_ptr<Node> current = head;
 
     while( current )
     {
