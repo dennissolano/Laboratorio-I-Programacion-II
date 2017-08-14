@@ -48,7 +48,9 @@ void testIntegerSortedSet2()
     other.insertSorted( 7 );
     other.insertSorted( 11 );
 
-    if( other.toStr( ) != "{0,3,7,11}" )
+    IntegerSortedSet integerSortedSet2( other );
+
+    if( integerSortedSet2.toStr( ) != "{0,3,7,11}" )
     {
         std::cout << "%TEST_FAILED% time=0 testname=testIntegerSortedSet2 (integerssortedsettest) message= El constructor de copia con un conjunto no vacío o el método toStr falló." << std::endl;
     }
