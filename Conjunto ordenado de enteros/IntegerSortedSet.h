@@ -15,6 +15,7 @@
 #define INTEGERSORTEDSET_H
 
 #include <iostream>
+#include <sstream>
 
 //  Representa un conjunto ordenado de enteros.
 

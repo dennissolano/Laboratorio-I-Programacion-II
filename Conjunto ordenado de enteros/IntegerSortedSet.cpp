@@ -87,6 +87,11 @@ bool IntegerSortedSet::insertSorted(int number)
                     {
                         previous = current;
                         current = current->next;
+
+                        if( !current ) // Insertar al final.
+                        {
+                            result = true;
+                        }
                     }
                     else
                     {
@@ -213,4 +218,14 @@ IntegerSortedSet& IntegerSortedSet::operator/(const IntegerSortedSet& other ) co
 
 std::string IntegerSortedSet::toStr() const
 {
+    std::stringstream buffer; // Instancia de flujo de salida.
+    Node* current = head;
+
+    while( current )
+    {
+        buffer << current->data << ',';
+        current = current->next;
+    }
+
+    return buffer.str( );
 }
