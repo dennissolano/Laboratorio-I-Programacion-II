@@ -38,10 +38,20 @@ void testIntegerSortedSet2()
 
     if( integerSortedSet.toStr( ) != "{}" )
     {
-        std::cout << "%TEST_FAILED% time=0 testname=testIntegerSortedSet2 (integerssortedsettest) message= El constructor de copia o el método toStr falló." << std::endl;
+        std::cout << "%TEST_FAILED% time=0 testname=testIntegerSortedSet2 (integerssortedsettest) message= El constructor de copia con el conjunto vacío o el método toStr falló." << std::endl;
     }
 
-    // Segundo caso: Conjunto con al menos un elemento. ToDo
+    // Segundo caso: Conjunto con al menos un elemento o más.
+
+    other.insertSorted( 0 );
+    other.insertSorted( 3 );
+    other.insertSorted( 7 );
+    other.insertSorted( 11 );
+
+    if( other.toStr( ) != "{0,3,7,11}" )
+    {
+        std::cout << "%TEST_FAILED% time=0 testname=testIntegerSortedSet2 (integerssortedsettest) message= El constructor de copia con un conjunto no vacío o el método toStr falló." << std::endl;
+    }
 }
 
 void testInsertSorted()
@@ -97,7 +107,7 @@ void testDeleteNumber()
 
     // Conjunto resultante: "{0,3,7,11}"
 
-    // Segundo caso: Eliminación de elemento  que no pertenece al conjunto.
+    // Segundo caso: Eliminación de elemento que no pertenece al conjunto.
 
     result = integerSortedSet.deleteNumber( 5 );
 
@@ -163,6 +173,7 @@ void testSearch()
 
     // Segundo caso: Buscar un elemento que no existe en el conjunto.
 
+    // Resultado esperado result = false.
     result = integerSortedSet.search( 5 );
 
     if( result )

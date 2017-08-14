@@ -23,7 +23,7 @@ IntegerSortedSet::IntegerSortedSet(const IntegerSortedSet& other)
     Node* current = other.head;
     Node* last = nullptr;
 
-    if( !current )
+    if( !current ) // Conjunto vacío.
     {
         head = nullptr;
     }
@@ -111,6 +111,57 @@ bool IntegerSortedSet::insertSorted(int number)
 
 bool IntegerSortedSet::deleteNumber(int number)
 {
+    Node* current = head;
+    Node* previous = nullptr;
+    bool result = false;
+
+    // Lista tiene al menos un elemento y el elemento al inicio es menor que el que se busca elminar. 
+    // Si la primera condición no se cumple, la lista está vacía. Si la segunda condición no se cumple el número a eliminar 
+    // no está en la lista ya que es menor que el primer número de la lista.
+
+    if( head && head->data <= number )
+    {
+        if( current->data == number ) // Eliminar al inicio.
+        {
+            current = head->next;
+            delete head;
+            head = current;
+            result = true;
+        }
+        else
+        {
+            while( current ) // Continuar buscando al elemento.
+            {
+                if( current->data == number ) // Elemento a eliminar encontrado.
+                {
+                    current = nullptr;
+                    result = true;
+                }
+                else
+                {
+                    if( current->data < number ) // Si el dato apuntado por el nodo actual es menor que el numero a eliminar.
+                    {
+                        previous = current;
+                        current = current->next;
+                    }
+                    else // El dato apuntado por el nodo actual es mayor al elemento a eliminar, por lo tanto no está en el conjunto.
+                    {
+                        current = nullptr;
+                    }
+                }
+            }
+
+            if( result ) // Eliminar al medio o al final.
+            {
+                current = previous->next->next; // Guardar el nodo siguiente al que se va a eliminar.
+                delete previous->next; // Elimina el nodo objetivo.
+                previous->next = current;
+
+            }
+        }
+    }
+
+    return result;
 }
 
 bool IntegerSortedSet::search(int number) const
@@ -163,4 +214,3 @@ IntegerSortedSet& IntegerSortedSet::operator/(const IntegerSortedSet& other ) co
 std::string IntegerSortedSet::toStr() const
 {
 }
-
