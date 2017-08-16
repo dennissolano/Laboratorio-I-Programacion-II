@@ -212,6 +212,44 @@ IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) co
 
 IntegerSortedSet& IntegerSortedSet::operator*(const IntegerSortedSet& other ) const
 {
+    IntegerSortedSet* intersection = new IntegerSortedSet( );
+    std::shared_ptr<Node> currentThis = this->head; // p
+    std::shared_ptr<Node> currentOther = other.head; // q
+    std::shared_ptr<Node> last = nullptr;
+
+    while( currentThis && currentOther )
+    {
+        if( currentThis->data < currentOther->data )
+        {
+            currentThis = currentThis->next;
+        }
+        else
+        {
+            if( currentOther->data < currentThis->data )
+            {
+                currentOther = currentOther->next;
+            }
+            else // Elemento en ambos conjuntos.
+            {
+                if( !last ) // Conjunto vacío.
+                {
+                    intersection->head = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                    last = intersection->head;
+                }
+                else // Emparejamiento.
+                {
+                    last->next = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                    last = last->next;
+                }
+
+                currentThis = currentThis->next;
+                currentOther = currentOther->next;
+            }
+        }
+    }
+
+    return *intersection;
+
 }
 
 IntegerSortedSet& IntegerSortedSet::operator/(const IntegerSortedSet& other ) const
@@ -222,12 +260,20 @@ std::string IntegerSortedSet::toStr() const
 {
     std::stringstream buffer; // Instancia de flujo de salida.
     std::shared_ptr<Node> current = head;
+    buffer << '{';
 
     while( current )
     {
-        buffer << current->data << ',';
+        buffer << current->data;
         current = current->next;
+
+        if( current )
+        {
+            buffer << ',';
+        }
     }
+
+    buffer << '}';
 
     return buffer.str( );
 }
