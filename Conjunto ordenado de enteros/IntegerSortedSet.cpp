@@ -205,67 +205,86 @@ bool IntegerSortedSet::search(int number) const
 IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) const
 {
     IntegerSortedSet* setUnion = new IntegerSortedSet( );
-    std::shared_ptr<Node> currentThis = this->head;
-    std::shared_ptr<Node> currentOther = other.head;
+    std::shared_ptr<Node> p = this->head;
+    std::shared_ptr<Node> q = other.head;
     std::shared_ptr<Node> last = nullptr;
 
     // Un conjunto puede ser más grande que el otro, por lo tanto si se finaliza con un conjunto y el otro aún tiene elementos hay que agregarlos a la unión.   
-    while( currentThis || currentOther )
+    while( p || q )
     {
 
-        if( !currentThis && currentOther ) // Ya no hay más elementos en *this, pero aún hay en other.
+        // 
+        if( !p && q ) // Ya no hay más elementos en *this(p) o *this(p) es conjunto vacío, pero aún hay elementos en other(q).
         {
-            while( currentOther )
+            if( !last ) // Lista vacía. Esta condición es necesaria para evitar violación de segmento en caso que *this(p) sea conjunto vacío.
             {
-                last->next = std::shared_ptr<Node>( new Node( currentOther->data ) );
-                last = last->next;
-                currentOther = currentOther->next;
+                setUnion->head = std::shared_ptr<Node>( new Node( q->data ) );
+                last = setUnion->head;
+                q = q->next;
+            }
+            else
+            {
+                while( q )
+                {
+                    last->next = std::shared_ptr<Node>( new Node( q->data ) );
+                    last = last->next;
+                    q = q->next;
+                }
             }
         }
         else
         {
-            if( currentThis && !currentOther ) // Ya no hay más elementos en other, pero aún hay en *this.
+            if( p && !q ) // Ya no hay más elementos en other(q) o other(q) es conjunto vacío, pero aún hay en *this(p).
             {
-                while( currentThis )
+                if( !last ) // Lista vacía.
                 {
-                    last->next = std::shared_ptr<Node>( new Node( currentThis->data ) );
-                    last = last->next;
-                    currentThis = currentThis->next;
+                    setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
+                    last = setUnion->head;
+                    p = p->next;
+                }
+                else
+                {
+                    while( p )
+                    {
+                        last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                        last = last->next;
+                        p = p->next;
+                    }
                 }
             }
-            else // En ambos conjuntos hay elementos.
+            else // Aún quedan elementos por recorrer en ambos conjuntos.
             {
-                if( currentThis->data < currentOther->data )
+                if( p->data < q->data )
                 {
-                    if( !last ) // Lista vacíá.
+                    if( !last ) // Lista vacía.
                     {
-                        setUnion->head = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                        setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
                         last = setUnion->head;
-                        currentThis = currentThis->next;
+                        p = p->next;
                     }
                     else
                     {
-                        last->next = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                        last->next = std::shared_ptr<Node>( new Node( p->data ) );
                         last = last->next;
-                        currentThis = currentThis->next;
+                        p = p->next;
                     }
 
                 }
                 else
                 {
-                    if( currentOther->data < currentThis->data )
+                    if( q->data < p->data )
                     {
-                        if( !last ) // Lista vacíá.
+                        if( !last ) // Lista vacía.
                         {
-                            setUnion->head = std::shared_ptr<Node>( new Node( currentOther->data ) );
+                            setUnion->head = std::shared_ptr<Node>( new Node( q->data ) );
                             last = setUnion->head;
-                            currentOther = currentOther->next;
+                            q = q->next;
                         }
                         else
                         {
-                            last->next = std::shared_ptr<Node>( new Node( currentOther->data ) );
+                            last->next = std::shared_ptr<Node>( new Node( q->data ) );
                             last = last->next;
-                            currentOther = currentOther->next;
+                            q = q->next;
                         }
 
                     }
@@ -273,17 +292,17 @@ IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) co
                     {
                         if( !last ) // Lista vacía.
                         {
-                            setUnion->head = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                            setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
                             last = setUnion->head;
                         }
                         else
                         {
-                            last->next = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                            last->next = std::shared_ptr<Node>( new Node( p->data ) );
                             last = last->next;
                         }
 
-                        currentThis = currentThis->next;
-                        currentOther = currentOther->next;
+                        p = p->next;
+                        q = q->next;
                     }
                 }
             }
@@ -295,6 +314,68 @@ IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) co
 
 IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) const
 {
+    IntegerSortedSet* difference = new IntegerSortedSet( );
+    std::shared_ptr<Node> p = this->head;
+    std::shared_ptr<Node> q = other.head;
+    std::shared_ptr<Node> last = nullptr;
+
+    while( p ) // Mientras haya elementos que recorrer en *this.
+    {
+        if( p && !q ) // Ya no hay más elementos en other(q), pero sí hay en *this(p) y todos se copian a la diferencia.
+        {
+            while( p )
+            {
+                if( !last ) // Lista vacía.
+                {
+                    difference->head = std::shared_ptr<Node>( new Node( p->data ) );
+                    last = difference->head;
+                    p = p->next;
+                }
+                else
+                {
+                    last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                    last = last->next;
+                    p = p->next;
+                }
+
+            }
+        }
+        else
+        {
+            if( p->data < q->data )
+            {
+
+
+                if( !last ) // Lista vacía.
+                {
+                    difference->head = std::shared_ptr<Node>( new Node( p->data ) );
+                    last = difference->head;
+                    p = p->next;
+                }
+                else
+                {
+                    last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                    last = last->next;
+                    p = p->next;
+                }
+            }
+            else
+            {
+                if( q->data < p->data )
+                {
+                    q = q->next;
+                }
+                else // Elementos iguales.
+                {
+                    p = p->next;
+                    q = q->next;
+                }
+            }
+        }
+
+    }
+
+    return *difference;
 }
 
 IntegerSortedSet& IntegerSortedSet::operator*(const IntegerSortedSet& other ) const
