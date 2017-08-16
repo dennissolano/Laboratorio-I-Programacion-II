@@ -204,6 +204,69 @@ bool IntegerSortedSet::search(int number) const
 
 IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) const
 {
+    IntegerSortedSet* setUnion = new IntegerSortedSet( );
+    std::shared_ptr<Node> p = this->head;
+    std::shared_ptr<Node> q = other.head;
+    std::shared_ptr<Node> last = nullptr;
+
+
+    while( p && q ) // Un conjunto puede ser más grande que el otro.
+    {
+
+        if( p->data < q->data )
+        {
+            if( !last ) // Lista vacíá.
+            {
+                setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
+                last = setUnion->head;
+                p = p->next;
+            }
+            else
+            {
+                last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                last = last->next;
+                p = p->next;
+            }
+
+        }
+        else
+        {
+            if( q->data < p->data )
+            {
+                if( !last ) // Lista vacíá.
+                {
+                    setUnion->head = std::shared_ptr<Node>( new Node( q->data ) );
+                    last = setUnion->head;
+                    q = q->next;
+                }
+                else
+                {
+                    last->next = std::shared_ptr<Node>( new Node( q->data ) );
+                    last = last->next;
+                    q = q->next;
+                }
+
+            }
+            else // Elementos iguales.
+            {
+                if( !last ) // Lista vacía.
+                {
+                    setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
+                    last = setUnion->head;
+                }
+                else
+                {
+                    last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                    last = last->next;
+                }
+
+                p = p->next;
+                q = q->next;
+            }
+        }
+    }
+
+    return *setUnion;
 }
 
 IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) const
@@ -213,8 +276,8 @@ IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) co
 IntegerSortedSet& IntegerSortedSet::operator*(const IntegerSortedSet& other ) const
 {
     IntegerSortedSet* intersection = new IntegerSortedSet( );
-    std::shared_ptr<Node> currentThis = this->head; // p
-    std::shared_ptr<Node> currentOther = other.head; // q
+    std::shared_ptr<Node> currentThis = this->head;
+    std::shared_ptr<Node> currentOther = other.head;
     std::shared_ptr<Node> last = nullptr;
 
     while( currentThis && currentOther )
