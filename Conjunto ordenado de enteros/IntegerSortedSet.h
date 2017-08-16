@@ -37,7 +37,7 @@ private:
 
         ~Node()
         {
-            std::cout << "Borrando: " << data << std::endl;
+            // std::cout << "Borrando: " << data << std::endl;
         }
     };
 

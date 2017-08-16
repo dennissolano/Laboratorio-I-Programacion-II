@@ -212,8 +212,6 @@ IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) co
     // Un conjunto puede ser más grande que el otro, por lo tanto si se finaliza con un conjunto y el otro aún tiene elementos hay que agregarlos a la unión.   
     while( p || q )
     {
-
-        // 
         if( !p && q ) // Ya no hay más elementos en *this(p) o *this(p) es conjunto vacío, pero aún hay elementos en other(q).
         {
             if( !last ) // Lista vacía. Esta condición es necesaria para evitar violación de segmento en caso que *this(p) sea conjunto vacío.
@@ -260,14 +258,13 @@ IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) co
                     {
                         setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
                         last = setUnion->head;
-                        p = p->next;
                     }
                     else
                     {
                         last->next = std::shared_ptr<Node>( new Node( p->data ) );
                         last = last->next;
-                        p = p->next;
                     }
+                    p = p->next;
 
                 }
                 else
@@ -278,15 +275,13 @@ IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) co
                         {
                             setUnion->head = std::shared_ptr<Node>( new Node( q->data ) );
                             last = setUnion->head;
-                            q = q->next;
                         }
                         else
                         {
                             last->next = std::shared_ptr<Node>( new Node( q->data ) );
                             last = last->next;
-                            q = q->next;
                         }
-
+                        q = q->next;
                     }
                     else // Elementos iguales.
                     {
@@ -321,31 +316,25 @@ IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) co
 
     while( p ) // Mientras haya elementos que recorrer en *this.
     {
-        if( p && !q ) // Ya no hay más elementos en other(q), pero sí hay en *this(p) y todos se copian a la diferencia.
+        if( p && !q ) // Ya no hay más elementos en other(q) u other(q) es conjunto vacío, pero sí hay en *this(p) y todos se copian a la diferencia.
         {
+            if( !last ) // Lista vacía.
+            {
+                difference->head = std::shared_ptr<Node>( new Node( p->data ) );
+                last = difference->head;
+                p = p->next;
+            }
             while( p )
             {
-                if( !last ) // Lista vacía.
-                {
-                    difference->head = std::shared_ptr<Node>( new Node( p->data ) );
-                    last = difference->head;
-                    p = p->next;
-                }
-                else
-                {
-                    last->next = std::shared_ptr<Node>( new Node( p->data ) );
-                    last = last->next;
-                    p = p->next;
-                }
-
+                last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                last = last->next;
+                p = p->next;
             }
         }
         else
         {
             if( p->data < q->data )
             {
-
-
                 if( !last ) // Lista vacía.
                 {
                     difference->head = std::shared_ptr<Node>( new Node( p->data ) );
@@ -372,7 +361,6 @@ IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) co
                 }
             }
         }
-
     }
 
     return *difference;
