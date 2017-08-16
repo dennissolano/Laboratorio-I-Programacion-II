@@ -205,63 +205,87 @@ bool IntegerSortedSet::search(int number) const
 IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) const
 {
     IntegerSortedSet* setUnion = new IntegerSortedSet( );
-    std::shared_ptr<Node> p = this->head;
-    std::shared_ptr<Node> q = other.head;
+    std::shared_ptr<Node> currentThis = this->head;
+    std::shared_ptr<Node> currentOther = other.head;
     std::shared_ptr<Node> last = nullptr;
 
-
-    while( p && q ) // Un conjunto puede ser más grande que el otro.
+    // Un conjunto puede ser más grande que el otro, por lo tanto si se finaliza con un conjunto y el otro aún tiene elementos hay que agregarlos a la unión.   
+    while( currentThis || currentOther )
     {
 
-        if( p->data < q->data )
+        if( !currentThis && currentOther ) // Ya no hay más elementos en *this, pero aún hay en other.
         {
-            if( !last ) // Lista vacíá.
+            while( currentOther )
             {
-                setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
-                last = setUnion->head;
-                p = p->next;
-            }
-            else
-            {
-                last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                last->next = std::shared_ptr<Node>( new Node( currentOther->data ) );
                 last = last->next;
-                p = p->next;
+                currentOther = currentOther->next;
             }
-
         }
         else
         {
-            if( q->data < p->data )
+            if( currentThis && !currentOther ) // Ya no hay más elementos en other, pero aún hay en *this.
             {
-                if( !last ) // Lista vacíá.
+                while( currentThis )
                 {
-                    setUnion->head = std::shared_ptr<Node>( new Node( q->data ) );
-                    last = setUnion->head;
-                    q = q->next;
-                }
-                else
-                {
-                    last->next = std::shared_ptr<Node>( new Node( q->data ) );
+                    last->next = std::shared_ptr<Node>( new Node( currentThis->data ) );
                     last = last->next;
-                    q = q->next;
+                    currentThis = currentThis->next;
                 }
-
             }
-            else // Elementos iguales.
+            else // En ambos conjuntos hay elementos.
             {
-                if( !last ) // Lista vacía.
+                if( currentThis->data < currentOther->data )
                 {
-                    setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
-                    last = setUnion->head;
+                    if( !last ) // Lista vacíá.
+                    {
+                        setUnion->head = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                        last = setUnion->head;
+                        currentThis = currentThis->next;
+                    }
+                    else
+                    {
+                        last->next = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                        last = last->next;
+                        currentThis = currentThis->next;
+                    }
+
                 }
                 else
                 {
-                    last->next = std::shared_ptr<Node>( new Node( p->data ) );
-                    last = last->next;
-                }
+                    if( currentOther->data < currentThis->data )
+                    {
+                        if( !last ) // Lista vacíá.
+                        {
+                            setUnion->head = std::shared_ptr<Node>( new Node( currentOther->data ) );
+                            last = setUnion->head;
+                            currentOther = currentOther->next;
+                        }
+                        else
+                        {
+                            last->next = std::shared_ptr<Node>( new Node( currentOther->data ) );
+                            last = last->next;
+                            currentOther = currentOther->next;
+                        }
 
-                p = p->next;
-                q = q->next;
+                    }
+                    else // Elementos iguales.
+                    {
+                        if( !last ) // Lista vacía.
+                        {
+                            setUnion->head = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                            last = setUnion->head;
+                        }
+                        else
+                        {
+                            last->next = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                            last = last->next;
+                        }
+
+                        currentThis = currentThis->next;
+                        currentOther = currentOther->next;
+                    }
+                }
             }
         }
     }
