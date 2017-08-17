@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     std::shared_ptr<IntegerSortedSet> setE( new IntegerSortedSet( ) );
 
     setE->insertSorted( 12 );
-     setE->insertSorted( 9 );
+    setE->insertSorted( 9 );
     setE->insertSorted( 6 );
 
     std::cout << setE->toStr( ) << std::endl;*/
@@ -84,9 +84,9 @@ int main(int argc, char** argv)
 
     std::cout << "B:" << setB.toStr( ) << std::endl;
 
-    IntegerSortedSet setC = setA - setB; // Unión del conjunto A con el conjunto B.
+    IntegerSortedSet setC = setA / setB; // Unión del conjunto A con el conjunto B.
 
-    std::cout << "A+B:" << setC.toStr( ) << std::endl;
+    std::cout << "A/B:" << setC.toStr( ) << std::endl;
 
     //IntegerSortedSet setD = setA / setB; // diferencia simétrica de los conjuntos A y B.
 

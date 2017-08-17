@@ -410,6 +410,22 @@ IntegerSortedSet& IntegerSortedSet::operator*(const IntegerSortedSet& other ) co
 
 IntegerSortedSet& IntegerSortedSet::operator/(const IntegerSortedSet& other ) const
 {
+    IntegerSortedSet* symmetricDifference = new IntegerSortedSet( );
+    IntegerSortedSet* setUnion = new IntegerSortedSet( );
+    IntegerSortedSet* intersection = new IntegerSortedSet( );
+
+    *setUnion = *this +other; 
+    std::cout << "A+B" << setUnion->toStr( ) << std::endl;
+
+    *intersection = *this * other;
+    std::cout << "A*B" << intersection->toStr( ) << std::endl;
+
+    *symmetricDifference = *setUnion - *intersection;
+    std::cout << "A/B" << intersection->toStr( ) << std::endl;
+
+    return *symmetricDifference;
+
+    //return(*this +other ) - ( *this * other );
 }
 
 std::string IntegerSortedSet::toStr() const
