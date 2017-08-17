@@ -7,13 +7,13 @@ CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
-CND_PLATFORM_Debug=MinGW_TDM-Windows
-CND_ARTIFACT_DIR_Debug=dist/Debug/MinGW_TDM-Windows
+CND_PLATFORM_Debug=GNU-Linux
+CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
 CND_ARTIFACT_NAME_Debug=conjunto_ordenado_de_enteros
-CND_ARTIFACT_PATH_Debug=dist/Debug/MinGW_TDM-Windows/conjunto_ordenado_de_enteros
-CND_PACKAGE_DIR_Debug=dist/Debug/MinGW_TDM-Windows/package
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/conjunto_ordenado_de_enteros
+CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
 CND_PACKAGE_NAME_Debug=conjuntoordenadodeenteros.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/MinGW_TDM-Windows/package/conjuntoordenadodeenteros.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/conjuntoordenadodeenteros.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux

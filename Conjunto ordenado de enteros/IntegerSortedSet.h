@@ -20,20 +20,23 @@
 
 //  Representa un conjunto ordenado de enteros.
 
-class IntegerSortedSet {
+class IntegerSortedSet
+{
 private:
 
-    struct Node {
+    struct Node
+    {
         int data;
         std::shared_ptr<Node> next;
 
         Node(int number)
-        : data{number}
-        , next{ nullptr}
+        : data{ number }
+        , next{ nullptr }
         {
         }
 
-        ~Node() {
+        ~Node()
+        {
             std::cout << "Borrando: " << data << std::endl;
         }
     };

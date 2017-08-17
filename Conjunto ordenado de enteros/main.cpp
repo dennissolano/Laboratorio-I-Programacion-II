@@ -50,23 +50,23 @@ int main(int argc, char** argv)
     setA.insertSorted( 18 );*/
 
 
-    setA.insertSorted( 7 );
+    /*setA.insertSorted( 7 );
     setA.insertSorted( 8 );
     setA.insertSorted( 9 );
     setA.insertSorted( 10 );
     setA.insertSorted( 11 );
     setA.insertSorted( 15 );
-    setA.insertSorted( 18 );
+    setA.insertSorted( 18 );*/
 
 
     // setA.insertSorted( 4 );
     // setA.insertSorted( 8 );
 
-    setB.insertSorted( 4 );
+    /*setB.insertSorted( 4 );
     setB.insertSorted( 8 );
     setB.insertSorted( 10 );
     setB.insertSorted( 12 );
-    setB.insertSorted( 9 );
+    setB.insertSorted( 9 );*/
 
 
     std::cout << "A:" << setA.toStr( ) << std::endl;
@@ -84,9 +84,9 @@ int main(int argc, char** argv)
 
     std::cout << "B:" << setB.toStr( ) << std::endl;
 
-    IntegerSortedSet* setC = &(setA + setB); // Unión del conjunto A con el conjunto B.
+    IntegerSortedSet setC = setA + setB; // Unión del conjunto A con el conjunto B.
 
-    //std::cout << "A/B:" << setC.toStr( ) << std::endl;
+    std::cout << "A+B:" << setC.toStr( ) << std::endl;
 
     //IntegerSortedSet setD = setA / setB; // diferencia simétrica de los conjuntos A y B.
 
