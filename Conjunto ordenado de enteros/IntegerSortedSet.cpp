@@ -204,60 +204,60 @@ bool IntegerSortedSet::search(int number) const
 
 IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) const
 {
-    IntegerSortedSet * setUnion = new IntegerSortedSet( );
-    std::shared_ptr<Node> p = this->head;
-    std::shared_ptr<Node> q = other.head;
+    IntegerSortedSet* result = new IntegerSortedSet( );
+    std::shared_ptr<Node> temp1 = this->head;
+    std::shared_ptr<Node> temp2 = other.head;
     std::shared_ptr<Node> last = nullptr;
 
-    while( p && q ) // Mientras haya elementos por recorrer en ambos conjuntos.
+    while( temp1 && temp2 ) // Mientras haya elementos por recorrer en ambos conjuntos.
     {
-        if( p->data < q->data )
+        if( temp1->data < temp2->data )
         {
             if( !last )
             {
-                setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
-                last = setUnion->head;
+                result->head = std::shared_ptr<Node>( new Node( temp1->data ) );
+                last = result->head;
             }
             else
             {
-                last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                last->next = std::shared_ptr<Node>( new Node( temp1->data ) );
                 last = last->next;
             }
 
-            p = p->next;
+            temp1 = temp1->next;
         }
         else
         {
-            if( q->data < p->data )
+            if( temp2->data < temp1->data )
             {
                 if( !last )
                 {
-                    setUnion->head = std::shared_ptr<Node>( new Node( q->data ) );
-                    last = setUnion->head;
+                    result->head = std::shared_ptr<Node>( new Node( temp2->data ) );
+                    last = result->head;
                 }
                 else
                 {
-                    last->next = std::shared_ptr<Node>( new Node( q->data ) );
+                    last->next = std::shared_ptr<Node>( new Node( temp2->data ) );
                     last = last->next;
                 }
 
-                q = q->next;
+                temp2 = temp2->next;
             }
             else // Elementos idénticos.
             {
                 if( !last )
                 {
-                    setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
-                    last = setUnion->head;
+                    result->head = std::shared_ptr<Node>( new Node( temp1->data ) );
+                    last = result->head;
                 }
                 else
                 {
-                    last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                    last->next = std::shared_ptr<Node>( new Node( temp1->data ) );
                     last = last->next;
                 }
 
-                p = p->next;
-                q = q->next;
+                temp1 = temp1->next;
+                temp2 = temp2->next;
             }
         }
     } // No hay más elementos por recorrer en *this o en other, alguno de los dos conjuntos es vacío o ambos conjuntos son vacíos.
@@ -265,42 +265,41 @@ IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) co
 
     if( !last ) // El conjunto resultanto está vacío, por lo tanto ambos conjuntos son vacíos o uno de ellos dos es vacío.
     {
-        if( p && !q ) // *this es conjunto no vacío y other es conjunto vacío.
+        if( temp1 && !temp2 ) // *this es conjunto no vacío y other es conjunto vacío.
         {
-            // return *( new IntegerSortedSet( *this ) );
-
-            setUnion->head = std::shared_ptr<Node>( new Node( p->data ) );
-            last = setUnion->head;
+            result->head = std::shared_ptr<Node>( new Node( temp1->data ) );
+            last = result->head;
+            temp1 = temp1->next;
         }
         else
         {
-            if( !p && q ) // *this es conjunto vacío y other es conjunto no vacío.
+            if( !temp1 && temp2 ) // *this es conjunto vacío y other es conjunto no vacío.
             {
-                // return *(new IntegerSortedSet(other));
-
-                setUnion->head = std::shared_ptr<Node>( new Node( q->data ) );
-                last = setUnion->head;
+                result->head = std::shared_ptr<Node>( new Node( temp2->data ) );
+                last = result->head;
+                temp2 = temp2->next;
             }
         }
     }
 
+    // Para los siguiente ciclos se asume que el conjunto resultante tiene al menos un elemento. 
+    // Además si ambos conjuntos *this y other son vacíos no tienen ningún efecto sobre los ciclos.
 
-    while( p ) // No hay más elementos que recorrer en other.
+    while( temp1 ) // No hay más elementos que recorrer en other u other es conjunto vacío.
     {
-        last->next = std::shared_ptr<Node>( new Node( p->data ) );
+        last->next = std::shared_ptr<Node>( new Node( temp1->data ) );
         last = last->next;
-        p = p->next;
+        temp1 = temp1->next;
     }
 
-    while( q ) // No hay más elementos que recorrer en *this.
+    while( temp2 ) // No hay más elementos que recorrer en *this o *this es conjunto vacío.
     {
-        last->next = std::shared_ptr<Node>( new Node( q->data ) );
+        last->next = std::shared_ptr<Node>( new Node( temp2->data ) );
         last = last->next;
-        q = q->next;
+        temp2 = temp2->next;
     }
 
-
-    return *setUnion;
+    return *result; // En caso de que *this y other sean conjuntos vacíos retorna un conjunto vacío.
 }
 
 IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) const
@@ -364,43 +363,43 @@ IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) co
 
 IntegerSortedSet& IntegerSortedSet::operator*(const IntegerSortedSet& other ) const
 {
-    IntegerSortedSet* intersection = new IntegerSortedSet( );
-    std::shared_ptr<Node> currentThis = this->head;
-    std::shared_ptr<Node> currentOther = other.head;
+    IntegerSortedSet* result = new IntegerSortedSet( );
+    std::shared_ptr<Node> temp1 = this->head;
+    std::shared_ptr<Node> temp2 = other.head;
     std::shared_ptr<Node> last = nullptr;
 
-    while( currentThis && currentOther )
+    while( temp1 && temp2 )
     {
-        if( currentThis->data < currentOther->data )
+        if( temp1->data < temp2->data )
         {
-            currentThis = currentThis->next;
+            temp1 = temp1->next;
         }
         else
         {
-            if( currentOther->data < currentThis->data )
+            if( temp2->data < temp1->data )
             {
-                currentOther = currentOther->next;
+                temp2 = temp2->next;
             }
             else // Elemento en ambos conjuntos.
             {
-                if( !last ) // Conjunto vacío.
+                if( !last ) // Conjunto resultante vacío.
                 {
-                    intersection->head = std::shared_ptr<Node>( new Node( currentThis->data ) );
-                    last = intersection->head;
+                    result->head = std::shared_ptr<Node>( new Node( temp1->data ) );
+                    last = result->head;
                 }
                 else // Emparejamiento.
                 {
-                    last->next = std::shared_ptr<Node>( new Node( currentThis->data ) );
+                    last->next = std::shared_ptr<Node>( new Node( temp1->data ) );
                     last = last->next;
                 }
 
-                currentThis = currentThis->next;
-                currentOther = currentOther->next;
+                temp1 = temp1->next;
+                temp2 = temp2->next;
             }
         }
     }
 
-    return *intersection;
+    return *result;
 
 }
 

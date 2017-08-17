@@ -58,7 +58,6 @@ int main(int argc, char** argv)
     setA.insertSorted( 15 );
     setA.insertSorted( 18 );*/
 
-
     // setA.insertSorted( 4 );
     // setA.insertSorted( 8 );
 
