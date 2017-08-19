@@ -250,7 +250,7 @@ IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) co
 
                 temp2 = temp2->next;
             }
-            else // Elementos idénticos.
+            else // Elementos idénticos. Se agrega solamente uno.
             {
                 if( !last )
                 {
@@ -329,14 +329,14 @@ IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) co
             {
                 result->head = std::shared_ptr<Node>( new Node( temp1->data ) );
                 last = result->head;
-                temp1 = temp1->next;
             }
             else
             {
                 last->next = std::shared_ptr<Node>( new Node( temp1->data ) );
                 last = last->next;
-                temp1 = temp1->next;
             }
+
+            temp1 = temp1->next;
         }
         else
         {
@@ -421,7 +421,94 @@ IntegerSortedSet& IntegerSortedSet::operator*(const IntegerSortedSet& other ) co
 
 IntegerSortedSet& IntegerSortedSet::operator/(const IntegerSortedSet& other ) const
 {
-    // Implementar utilizando lógica de emparejamiento.
+    if( result )
+    {
+        result.reset( );
+    }
+
+    result = std::shared_ptr<IntegerSortedSet>( new IntegerSortedSet( ) );
+    std::shared_ptr<Node> temp1 = this->head;
+    std::shared_ptr<Node> temp2 = other.head;
+    std::shared_ptr<Node> last = nullptr;
+
+    while( temp1 && temp2 ) // Mientras haya elementos por recorrer en ambos conjuntos.
+    {
+        if( temp1->data < temp2->data )
+        {
+            if( !last )
+            {
+                result->head = std::shared_ptr<Node>( new Node( temp1->data ) );
+                last = result->head;
+            }
+            else
+            {
+                last->next = std::shared_ptr<Node>( new Node( temp1->data ) );
+                last = last->next;
+            }
+
+            temp1 = temp1->next;
+        }
+        else
+        {
+            if( temp2->data < temp1->data )
+            {
+                if( !last )
+                {
+                    result->head = std::shared_ptr<Node>( new Node( temp2->data ) );
+                    last = result->head;
+                }
+                else
+                {
+                    last->next = std::shared_ptr<Node>( new Node( temp2->data ) );
+                    last = last->next;
+                }
+
+                temp2 = temp2->next;
+            }
+            else // Elementos iguales, son ignorados.
+            {
+                temp1 = temp1->next;
+                temp2 = temp2->next;
+            }
+        }
+    }
+
+    if( !last ) // Conjunto resultante no tiene elementos, por lo tanto ambos conjuntos son vacíos o alguno de ellos es conjunto vacío.
+    {
+        if( temp1 && !temp2 ) // *this es conjunto no vacío y other es conjunto vacío.
+        {
+            result->head = std::shared_ptr<Node>( new Node( temp1->data ) );
+            last = result->head;
+            temp1 = temp1->next;
+        }
+        else
+        {
+            if( !temp1 && temp2 ) // *this es conjunto vacío y other es conjunto no vacío.
+            {
+                result->head = std::shared_ptr<Node>( new Node( temp2->data ) );
+                last = result->head;
+                temp2 = temp2->next;
+            }
+        } // El caso en que ambos conjuntos son vacíos es irrelevante.
+    }
+
+    //Asumimos que el conjunto resultante tiene al menos un elemento.
+
+    while( temp1 ) // Ya no hay más elementos por recorrer en other, pero sí en *this.
+    {
+        last->next = std::shared_ptr<Node>( new Node( temp1->data ) );
+        last = last->next;
+        temp1 = temp1->next;
+    }
+
+    while( temp2 ) // Ya no hay más elementos por recorrer en *this, pero sí en other.
+    {
+        last->next = std::shared_ptr<Node>( new Node( temp2->data ) );
+        last = last->next;
+        temp2 = temp2->next;
+    }
+
+    return *result; // En caso de que ambos conjuntos sean vacíos se retorna un conjunto vacío.
 }
 
 std::string IntegerSortedSet::toStr() const

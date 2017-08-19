@@ -414,7 +414,7 @@ void testIntersection()
     }
 }
 
-// La prueba de la diferencia simétrica no se implementa porque por definición ( A/B = AUB - A*B ), hace uso de los operadores de unión, diferencia e intersección y si los tres 
+// La prueba de la diferencia simétrica no se implementa porque por definición ( A/B = A-B U B-A ), hace uso de los operadores de unión, diferencia e intersección y si los tres 
 // anteriores funcionan correctamente la diferenecia simétrica también lo hará.
 
 int main(int argc, char** argv)
