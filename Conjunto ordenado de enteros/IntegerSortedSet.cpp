@@ -311,61 +311,65 @@ IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) co
 
 IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) const
 {
-    IntegerSortedSet* difference = new IntegerSortedSet( );
-    std::shared_ptr<Node> p = this->head;
-    std::shared_ptr<Node> q = other.head;
+    if( result )
+    {
+        result.reset( );
+    }
+
+    result = std::shared_ptr<IntegerSortedSet>( new IntegerSortedSet( ) );
+    std::shared_ptr<Node> temp1 = this->head;
+    std::shared_ptr<Node> temp2 = other.head;
     std::shared_ptr<Node> last = nullptr;
 
-    while( p ) // Mientras haya elementos que recorrer en *this.
+    while( temp1 && temp2 )
     {
-        if( p && !q ) // Ya no hay más elementos en other(q) u other(q) es conjunto vacío, pero sí hay en *this(p) y todos se copian a la diferencia.
+        if( temp1->data < temp2->data )
         {
             if( !last ) // Lista vacía.
             {
-                difference->head = std::shared_ptr<Node>( new Node( p->data ) );
-                last = difference->head;
-                p = p->next;
+                result->head = std::shared_ptr<Node>( new Node( temp1->data ) );
+                last = result->head;
+                temp1 = temp1->next;
             }
-            while( p )
+            else
             {
-                last->next = std::shared_ptr<Node>( new Node( p->data ) );
+                last->next = std::shared_ptr<Node>( new Node( temp1->data ) );
                 last = last->next;
-                p = p->next;
+                temp1 = temp1->next;
             }
         }
         else
         {
-            if( p->data < q->data )
+            if( temp2->data < temp1->data )
             {
-                if( !last ) // Lista vacía.
-                {
-                    difference->head = std::shared_ptr<Node>( new Node( p->data ) );
-                    last = difference->head;
-                    p = p->next;
-                }
-                else
-                {
-                    last->next = std::shared_ptr<Node>( new Node( p->data ) );
-                    last = last->next;
-                    p = p->next;
-                }
+                temp2 = temp2->next;
             }
-            else
+            else // Elementos iguales.
             {
-                if( q->data < p->data )
-                {
-                    q = q->next;
-                }
-                else // Elementos iguales.
-                {
-                    p = p->next;
-                    q = q->next;
-                }
+                temp1 = temp1->next;
+                temp2 = temp2->next;
             }
         }
     }
 
-    return *difference;
+    if( !last ) // Conjunto resultante está vacío, por lo tanto ambos conjuntos están vacíos o alguno de ellos está vacío.
+    {
+        if( temp1 && !temp2 ) // *this es un conjunto no vacío y other es conjunto vacío. Único caso relevante.
+        {
+            result->head = std::shared_ptr<Node>( new Node( temp1->data ) );
+            last = result->head;
+            temp1 = temp1->next;
+        }
+    }
+
+    while( temp1 )
+    {
+        last->next = std::shared_ptr<Node>( new Node( temp1->data ) );
+        last = last->next;
+        temp1 = temp1->next;
+    }
+
+    return *result; // Si ambos conjuntos son vacíos o *this es conjunto vacío se retorna un conjunto vacío.
 }
 
 IntegerSortedSet& IntegerSortedSet::operator*(const IntegerSortedSet& other ) const
