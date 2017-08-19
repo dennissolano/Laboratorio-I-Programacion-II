@@ -42,6 +42,7 @@ private:
     };
 
     std::shared_ptr<Node> head;
+    static std::shared_ptr<IntegerSortedSet> result;
 
 public:
     // EFE: Construye un nuevo conjunto de enteros vacío.

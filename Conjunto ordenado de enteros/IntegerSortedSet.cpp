@@ -13,6 +13,8 @@
 
 #include "IntegerSortedSet.h"
 
+std::shared_ptr<IntegerSortedSet> IntegerSortedSet::result(nullptr);
+
 IntegerSortedSet::IntegerSortedSet()
 : head{nullptr}
 {
@@ -204,7 +206,12 @@ bool IntegerSortedSet::search(int number) const
 
 IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) const
 {
-    IntegerSortedSet* result = new IntegerSortedSet( );
+    if( result )
+    {
+        result.reset( );
+    }
+
+    result = std::shared_ptr<IntegerSortedSet>( new IntegerSortedSet( ) );
     std::shared_ptr<Node> temp1 = this->head;
     std::shared_ptr<Node> temp2 = other.head;
     std::shared_ptr<Node> last = nullptr;
@@ -363,7 +370,12 @@ IntegerSortedSet& IntegerSortedSet::operator-(const IntegerSortedSet& other ) co
 
 IntegerSortedSet& IntegerSortedSet::operator*(const IntegerSortedSet& other ) const
 {
-    IntegerSortedSet* result = new IntegerSortedSet( );
+    if( result )
+    {
+        result.reset( );
+    }
+
+    result = std::shared_ptr<IntegerSortedSet>( new IntegerSortedSet( ) );
     std::shared_ptr<Node> temp1 = this->head;
     std::shared_ptr<Node> temp2 = other.head;
     std::shared_ptr<Node> last = nullptr;
