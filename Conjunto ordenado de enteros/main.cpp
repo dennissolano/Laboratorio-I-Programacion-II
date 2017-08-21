@@ -18,28 +18,10 @@
 
 int main(int argc, char** argv)
 {
-    IntegerSortedSet setA, setB, setD, setF; // a = {1, 2, 3} y b = {10, 11, 13}
+    IntegerSortedSet setA, setB, setC;
 
-    /*setA.insertSorted( 1 );
-    setA.insertSorted( 2 );
-    setA.insertSorted( 3 );
-
-    std::cout << setA.toStr( ) << std::endl;
-
-    setB.insertSorted( 10 );
-    setB.insertSorted( 11 );
-    setB.insertSorted( 13 );
-
-    std::cout << setB.toStr( ) << std::endl;
-
-    Inicialización de apuntador inteligente.
-    std::shared_ptr<IntegerSortedSet> setE( new IntegerSortedSet( ) );
-
-    setE->insertSorted( 12 );
-    setE->insertSorted( 9 );
-    setE->insertSorted( 6 );
-
-    std::cout << setE->toStr( ) << std::endl;*/
+    // Inicialización de apuntador inteligente.
+    // std::shared_ptr<IntegerSortedSet> setE( new IntegerSortedSet( ) );
 
     setA.insertSorted( 4 );
     setA.insertSorted( 9 );
@@ -57,39 +39,11 @@ int main(int argc, char** argv)
     setB.insertSorted( 15 );
     setB.insertSorted( 18 );
 
-    setD.insertSorted( 25 );
-    setD.insertSorted( 30 );
-    setD.insertSorted( 15 );
-    setD.insertSorted( 10 );
-    setD.insertSorted( 9 );
-    setD.insertSorted( 1 );
-    setD.insertSorted( 7 );
-
-    // setA.insertSorted( 4 );
-    // setA.insertSorted( 8 );
-
-    /*setB.insertSorted( 4 );
-    setB.insertSorted( 8 );
-    setB.insertSorted( 10 );
-    setB.insertSorted( 12 );
-    setB.insertSorted( 9 );*/
-
-    /* setB.insertSorted( 7 );
-     setB.insertSorted( 8 );
-     setB.insertSorted( 9 );
-     setB.insertSorted( 10 );
-     setB.insertSorted( 11 );
-     setB.insertSorted( 15 );
-     setB.insertSorted( 18 );*/
-
+    setC = setA + setB;
 
     std::cout << "A:" << setA.toStr( ) << std::endl;
     std::cout << "B:" << setB.toStr( ) << std::endl;
-    std::cout << "D:" << setD.toStr( ) << std::endl << std::endl;
-
-    IntegerSortedSet setC = setA + setB + setD; // Unión del conjunto A, B y C.
-
-    std::cout << "A+B+D" << setC.toStr( ) << std::endl << std::endl;
+    std::cout << "A+B" << setC.toStr( ) << std::endl << std::endl;
 
     return 0;
 }

@@ -39,6 +39,9 @@ private:
     };
 
     std::shared_ptr<Node> head;
+
+    // Este atributo no permite la ejecucuón de operaciones como: A + B + C.
+    // Ya que la referencia retornada por A + B es destruida por la condición inicial del operador de unión: if( result ){ result.reset( ); }
     static std::shared_ptr<IntegerSortedSet> result;
 
 public:
