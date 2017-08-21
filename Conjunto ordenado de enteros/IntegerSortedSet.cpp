@@ -206,12 +206,14 @@ bool IntegerSortedSet::search(int number) const
 
 IntegerSortedSet& IntegerSortedSet::operator+(const IntegerSortedSet& other ) const
 {
-    if( result )
+    /*if( result )
     {
         result.reset( );
     }
 
-    result = std::shared_ptr<IntegerSortedSet>( new IntegerSortedSet( ) );
+    result = std::shared_ptr<IntegerSortedSet>( new IntegerSortedSet( ) );*/
+
+    IntegerSortedSet* result = new IntegerSortedSet( );
     std::shared_ptr<Node> temp1 = this->head;
     std::shared_ptr<Node> temp2 = other.head;
     std::shared_ptr<Node> last = nullptr;

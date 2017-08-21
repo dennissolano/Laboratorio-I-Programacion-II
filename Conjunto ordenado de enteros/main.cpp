@@ -57,6 +57,14 @@ int main(int argc, char** argv)
     setB.insertSorted( 15 );
     setB.insertSorted( 18 );
 
+    setD.insertSorted( 25 );
+    setD.insertSorted( 30 );
+    setD.insertSorted( 15 );
+    setD.insertSorted( 10 );
+    setD.insertSorted( 9 );
+    setD.insertSorted( 1 );
+    setD.insertSorted( 7 );
+
     // setA.insertSorted( 4 );
     // setA.insertSorted( 8 );
 
@@ -77,11 +85,11 @@ int main(int argc, char** argv)
 
     std::cout << "A:" << setA.toStr( ) << std::endl;
     std::cout << "B:" << setB.toStr( ) << std::endl;
+    std::cout << "D:" << setD.toStr( ) << std::endl << std::endl;
 
-    IntegerSortedSet setC = setA + setA + setA; // Unión del conjunto A con el conjunto B.
+    IntegerSortedSet setC = setA + setB + setD; // Unión del conjunto A, B y C.
 
-    std::cout << "A+A+A" << setC.toStr( ) << std::endl;
-
+    std::cout << "A+B+D" << setC.toStr( ) << std::endl << std::endl;
 
     return 0;
 }
